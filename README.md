@@ -1,5 +1,5 @@
 # raster_geostatistics
-![DOI](https://zenodo.org/badge/150665172.svg)
+[![DOI](https://zenodo.org/badge/150665172.svg)](https://zenodo.org/badge/latestdoi/150665172)
 
 
 A_work_in_progress_repo
