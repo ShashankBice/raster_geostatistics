@@ -1,4 +1,5 @@
 # raster_geostatistics
+![DOI](https://zenodo.org/badge/150665172.svg)](https://zenodo.org/badge/latestdoi/150665172)
 A_work_in_progress_repo
 - Uses [GSLIB](http://www.gslib.com/) under the hood
 - Python wrapper function around GSLIB were originally developed by [Micheal Pyrcz](http://www.michaelpyrcz.com/), 
