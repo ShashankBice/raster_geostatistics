@@ -7,7 +7,7 @@
 import os
 import subprocess
 import numpy as np
-import pandas as pd 
+import pandas as pd
 import random as rand
 import matplotlib.pyplot as plt
 
@@ -148,7 +148,7 @@ def vargplt(lag,gamma,npair,vtype,name,xmin,xmax,ymin,ymax,sill,title,cmap):
     return im
 
 def vargplts(lag,gamma,npair,vtype,name,xmin,xmax,ymin,ymax,sill,title,cmap):
-    
+
     plt.figure(figsize=(8,6))
     marker = ["o","v","s","h","^",">","<"]
     nvar = lag.shape[0]
@@ -172,7 +172,7 @@ def vargplts(lag,gamma,npair,vtype,name,xmin,xmax,ymin,ymax,sill,title,cmap):
 
 # regular grid variogram, 2D wrapper for gam from GSLIB (.exe must be in working directory)
 def gam_2d(array,nx,ny,hsiz,nlag,xlag,ylag,bstand):
-    
+
 
     lag = []; gamma = []; npair = []
 
@@ -217,7 +217,7 @@ def gam_2d(array,nx,ny,hsiz,nlag,xlag,ylag,bstand):
 
 # irregular grid variogram, 2D wrapper for gam from GSLIB (.exe must be in working directory)
 def gamv_2d(df,xcol,ycol,vcol,nlag,lagdist,azi,atol,bstand):
-    
+
 
     lag = []; gamma = []; npair = []
 
@@ -264,7 +264,7 @@ def gamv_2d(df,xcol,ycol,vcol,nlag,lagdist,azi,atol,bstand):
 
 # irregular spaced data, 2D wrapper for varmap from GSLIB (.exe must be in working directory)
 def varmapv_2d(df,xcol,ycol,vcol,nx,ny,lagdist,minpairs,vmax,bstand,title,vlabel):
-    
+
 
     lag = []; gamma = []; npair = []
 
@@ -558,4 +558,3 @@ def random_sample(array,xmin,xmax,ymin,ymax,step,nsamp,name):
     return(df)
 if __name__ == "__main__":
     main()
-    
