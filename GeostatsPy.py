@@ -206,9 +206,9 @@ def gam_2d(array,nx,ny,hsiz,nlag,xlag,ylag,bstand):
         while reading:
             try:
                 head = [next(myfile) for x in range(1)]
-                lag.append(float(head[0].split()[1]))
-                gamma.append(float(head[0].split()[2]))
-                npair.append(float(head[0].split()[3]))
+                lag.append(np.float64(head[0].split()[1]))
+                gamma.append(np.float64(head[0].split()[2]))
+                npair.append(np.float64(head[0].split()[3]))
                 iline = iline + 1
             except StopIteration:
                 reading = False
@@ -221,8 +221,8 @@ def gamv_2d(df,xcol,ycol,vcol,nlag,lagdist,azi,atol,bstand):
 
     lag = []; gamma = []; npair = []
 
-    #df_ext = pd.DataFrame({'X':df[xcol],'Y':df[ycol],'Z':rand_sample[vcol]})
-    Dataframe2GSLIB("gamv_out.dat",df)
+    df_ext = pd.DataFrame({'X':df[xcol],'Y':df[ycol],'Z':df[vcol]})
+    Dataframe2GSLIB("gamv_out.dat",df_ext)
 
     file = open("gamv.par", "w")
 
@@ -253,9 +253,9 @@ def gamv_2d(df,xcol,ycol,vcol,nlag,lagdist,azi,atol,bstand):
         while reading:
             try:
                 head = [next(myfile) for x in range(1)]
-                lag.append(float(head[0].split()[1]))
-                gamma.append(float(head[0].split()[2]))
-                npair.append(float(head[0].split()[3]))
+                lag.append(np.float64(head[0].split()[1]))
+                gamma.append(np.float64(head[0].split()[2]))
+                npair.append(np.float64(head[0].split()[3]))
                 iline = iline + 1
             except StopIteration:
                 reading = False
@@ -553,8 +553,59 @@ def random_sample(array,xmin,xmax,ymin,ymax,step,nsamp,name):
         x.append(xx[iy,ix])
         y.append(yy[iy,ix])
         v.append(array[iy,ix])
-
     df = pd.DataFrame(np.c_[x,y,v],columns=['X', 'Y', name])
     return(df)
+def GSLIB_sgsim_2d_cond(df,xcol,ycol,vcol,nreal,xmn,ymn,nx,ny,res,seed,hrange1,hrange2,azi,output_file):
+    df_ext = pd.DataFrame({'X':df[xcol],'Y':df[ycol],'Z':df[vcol]})
+    Dataframe2GSLIB("sgsim.dat",df_ext)
+    #hmn = hsiz * 0.5
+    hctab = int(hrange1/res)*2 + 1
+
+    sim_array = np.random.rand(nx,ny)
+    #hrange2=0.1
+    file = open("sgsim.par", "w")
+    file.write("              Parameters for SGSIM                                         \n")
+    file.write("              ********************                                         \n")
+    file.write("                                                                           \n")
+    file.write("START OF PARAMETER:                                                        \n")
+    file.write("sgsim.dat                     -file with data                              \n")
+    file.write("1  2  0  3  0  0              -  columns for X,Y,Z,vr,wt,sec.var.          \n")
+    file.write("-1.0e21 1.0e21                -  trimming limits                           \n")
+    file.write("1                             -transform the data (0=no, 1=yes)            \n")
+    file.write("sgsim.trn                     -  file for output trans table               \n")
+    file.write("0                             -  consider ref. dist (0=no, 1=yes)          \n")
+    file.write("none.dat                      -  file with ref. dist distribution          \n")
+    file.write("1  0                          -  columns for vr and wt                     \n")
+    file.write("-4.0    4.0                   -  zmin,zmax(tail extrapolation)             \n")
+    file.write("1      -4.0                   -  lower tail option, parameter              \n")
+    file.write("1       4.0                   -  upper tail option, parameter              \n")
+    file.write("1                             -debugging level: 0,1,2,3                    \n")
+    file.write("sgsim.dbg                     -file for debugging output                   \n")
+    file.write(str(output_file) + "           -file for simulation output                  \n")
+    file.write(str(nreal) + "                 -number of realizations to generate          \n")
+    file.write(str(nx) + " " + str(xmn) + " " + str(res) + "                               \n")
+    file.write(str(ny) + " " + str(ymn) + " " + str(res) + "                               \n")
+    file.write("1 0.0 1.0                     - nz zmn zsiz                                \n")
+    file.write(str(seed) + "                  -random number seed                          \n")
+    file.write("0     8                       -min and max original data for sim           \n")
+    file.write("12                            -number of simulated nodes to use            \n")
+    file.write("0                             -assign data to nodes (0=no, 1=yes)          \n")
+    file.write("1     3                       -multiple grid search (0=no, 1=yes),num      \n")
+    file.write("0                             -maximum data per octant (0=not used)        \n")
+    file.write(str(hrange1) + " " + str(hrange2) + " 1.0 -maximum search  (hmax,hmin,vert) \n")
+    file.write(str(azi) + "   0.0   0.0       -angles for search ellipsoid                 \n")
+    file.write(str(hctab) + " " + str(hctab) + " 1 -size of covariance lookup table        \n")
+    file.write("0     0.60   1.0              -ktype: 0=SK,1=OK,2=LVM,3=EXDR,4=COLC        \n")
+    file.write("none.dat                      -  file with LVM, EXDR, or COLC variable     \n")
+    file.write("4                             -  column for secondary variable             \n")
+    file.write("1    0.0                      -nst, nugget effect                          \n")
+    file.write("1    1.0 " + str(azi) + " 0.0 0.0 -it,cc,ang1,ang2,ang3                    \n")
+    file.write(" " + str(hrange1) + " " + str(hrange2) + " 1.0 -a_hmax, a_hmin, a_vert     \n")
+    file.close()
+    cmd = ['sgsim','sgsim.par']
+    subprocess.call(cmd)
+    sim_array = GSLIB2ndarray(output_file,0,nx,ny)
+    return(sim_array)
+
 if __name__ == "__main__":
     main()
