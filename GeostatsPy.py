@@ -216,7 +216,7 @@ def gam_2d(array,nx,ny,hsiz,nlag,xlag,ylag,bstand):
     return(lag,gamma,npair)
 
 # irregular grid variogram, 2D wrapper for gam from GSLIB (.exe must be in working directory)
-def gamv_2d(df,xcol,ycol,vcol,nlag,lagdist,azi,atol,bstand):
+def gamv_2d(df,xcol,ycol,vcol,nlag,lagdist,azi,atol,bstand,bandh,bandv):
 
 
     lag = []; gamma = []; npair = []
@@ -239,7 +239,7 @@ def gamv_2d(df,xcol,ycol,vcol,nlag,lagdist,azi,atol,bstand):
     file.write(str(lagdist) + "                       -lag separation distance                 \n")
     file.write(str(lagdist*0.5) + "                   -lag tolerance                           \n")
     file.write("1                                 -number of directions                    \n")
-    file.write(str(azi) + " " + str(atol) + " 99999.9 0.0  90.0  50.0  -azm,atol,bandh,dip,dtol,bandv \n")
+    file.write(str(azi) + " " + str(atol) + " " + str(bandh) + " 0.0  0 " + str(bandv) + "  -azm,atol,bandh,dip,dtol,bandv \n")
     file.write(str(bstand) + "                    -standardize sills? (0=no, 1=yes)        \n")
     file.write("1                                 -number of variograms                    \n")
     file.write("1   1   1                         -tail var., head var., variogram type    \n")
