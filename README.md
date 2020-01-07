@@ -5,7 +5,7 @@
 This repository contains notebooks for semivariogram analysis involving point or raster data. 
 - Uses [GSLIB](http://www.gslib.com/) under the hood
 - Python wrapper function around GSLIB were originally developed by [Micheal Pyrcz](http://www.michaelpyrcz.com/), 
-[GeostatsPy](https://github.com/GeostatsGuy/GeostatsPy). I just made some minor modifications to it. Credits for the package directly go to the authors (Micheal and team).
+[GeostatsPy] (https://github.com/GeostatsGuy/GeostatsPy). I just made some minor modifications to it. Credits for the package directly go to the authors (Micheal and team).
 
 Notebooks which were used in analysing High Mountain Asia Glacier Mass balance paper include:
 - [Mass_balance_cor_working.ipynb] (https://github.com/ShashankBice/raster_geostatistics/blob/master/Mass_balance_cor_working.ipynb) : Semivariogram analysis for glacier mass balance errors
